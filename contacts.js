@@ -49,7 +49,6 @@ function removeContact(contactId, list) {
 }
 
 function addContact(name, email, phone, list) {
-  // ...твой код
   const id = Number.parseInt(list[list.length - 1].id) + 1;
   return [...list, { id: id.toString(), name, email, phone }];
 }
