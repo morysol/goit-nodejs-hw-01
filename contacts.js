@@ -23,7 +23,6 @@ function getContacts() {
 }
 
 function saveContacts(list) {
-  //
   try {
     fs.writeFile(contactsPath, list, "utf8");
     console.log("Done");
@@ -32,19 +31,15 @@ function saveContacts(list) {
   }
 }
 
-// TODO: задокументировать каждую функцию
 function listContacts(list) {
-  // ...твой код
   console.table(list);
 }
 
 function getContactById(contactId, list) {
-  // ...твой код
   return list.find((contact) => contact.id === contactId.toString());
 }
 
 function removeContact(contactId, list) {
-  // ...твой код
   return list.filter((contact) => contact.id !== contactId.toString());
 }
 
