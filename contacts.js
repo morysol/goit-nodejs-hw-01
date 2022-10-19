@@ -1,57 +1,50 @@
-const fs = require("fs").promises;
-const path = require("path");
+const fs = require('fs').promises;
+const path = require('path');
 
-const jsonPath = "db";
-const jsonContacts = "contacts.json";
+const jsonContacts = 'db/contacts.json';
+const contactsPath = path.join(__dirname, jsonContacts);
 
-const joinedPath = path.join(
-  path.dirname(process.argv[1]),
-  jsonPath,
-  jsonContacts
-);
-
-const contactsPath = path.normalize(joinedPath);
-
-function getContacts() {
-  return fs
+async function getContacts() {
+  return await fs
     .readFile(contactsPath)
-    .then((data) => {
+    .then(data => {
       return JSON.parse(data.toString());
     })
-    .then()
-    .catch((err) => err.message);
+    .catch(err => err.message);
 }
 
-function saveContacts(list) {
-  try {
-    fs.writeFile(contactsPath, list, "utf8");
-    console.log("Done");
-  } catch (e) {
-    console.log(e);
-  }
+async function saveContacts(list) {
+  return await fs
+    .writeFile(contactsPath, list, 'utf8')
+    .catch(err => err.message);
 }
 
-function listContacts(list) {
-  console.table(list);
+function getContactById(contactId) {
+  return getContacts()
+    .then(list => list.find(contact => contact.id === contactId.toString()))
+    .catch(err => err.message);
 }
 
-function getContactById(contactId, list) {
-  return list.find((contact) => contact.id === contactId.toString());
+function removeContact(contactId) {
+  getContacts()
+    .then(list => list.filter(contact => contact.id !== contactId.toString()))
+    .then(filteredList => saveContacts(JSON.stringify(filteredList)))
+    .catch(err => err.message);
 }
 
-function removeContact(contactId, list) {
-  return list.filter((contact) => contact.id !== contactId.toString());
-}
-
-function addContact(name, email, phone, list) {
-  const id = Number.parseInt(list[list.length - 1].id) + 1;
-  return [...list, { id: id.toString(), name, email, phone }];
+function addContact(name, email, phone) {
+  getContacts()
+    .then(list => {
+      const id = Number.parseInt(list[list.length - 1].id) + 1;
+      return [...list, { id: id.toString(), name, email, phone }];
+    })
+    .then(updatedList => saveContacts(JSON.stringify(updatedList)))
+    .catch(err => err.message);
 }
 
 module.exports = {
   getContacts,
   saveContacts,
-  listContacts,
   getContactById,
   removeContact,
   addContact,
