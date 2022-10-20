@@ -31,7 +31,7 @@ node index.js --action get --id 5 && node index.js --action list
 # Добавялем контакт
 
 node index.js --action add --name Mango --email mango@gmail.com --phone
-322-22-22 && node index.js --action list
+322-22-22
 
 # Удаляем контакт
 
