@@ -17,11 +17,13 @@ const argv = program.opts();
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
-      console.table(await contacts.getContacts());
+      // console.table(await contacts.getContacts());
+      await contacts.getContacts();
       break;
 
     case 'get':
-      console.log((await contacts.getContactById(id)) || 'nothing found');
+      // console.log((await contacts.getContactById(id)) || 'nothing found');
+      contacts.getContactById(id);
 
       break;
 
@@ -31,7 +33,7 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case 'remove':
-      console.log(await contacts.removeContact(id));
+      await contacts.removeContact(id);
       break;
 
     default:
