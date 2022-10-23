@@ -10,10 +10,9 @@ async function getContacts() {
   try {
     const content = await fs.readFile(contactsPath, 'utf8');
     contacts = JSON.parse(content);
-    console.table(contacts);
     return contacts;
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 
@@ -25,7 +24,7 @@ async function saveContacts(list) {
       'utf8'
     );
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 
@@ -34,10 +33,9 @@ async function getContactById(contactId) {
   try {
     const list = await getContacts();
     const contact = list.find(contact => contact.id === id) || null;
-    console.log(contact || 'nothing found');
     return contact || null;
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 
@@ -47,16 +45,13 @@ async function removeContact(contactId) {
     const list = await getContacts();
     const idx = list.findIndex(contact => contact.id === id);
     if (idx === -1) {
-      console.log('contact not found');
-
       return null;
     }
     const [result] = list.splice(idx, 1);
     await saveContacts(list);
-    console.log(result);
     return result;
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 
@@ -66,10 +61,9 @@ async function addContact(name, email, phone) {
     const newContact = { id: nanoid(), name, email, phone };
     list.push(newContact);
     await saveContacts(list);
-    console.log(newContact);
     return newContact;
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 
