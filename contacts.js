@@ -9,7 +9,7 @@ const contactsPath = path.join(__dirname, jsonContacts);
 async function getContacts() {
   try {
     const content = await fs.readFile(contactsPath, 'utf8');
-    contacts = JSON.parse(content);
+    const contacts = JSON.parse(content);
     return contacts;
   } catch (err) {
     return err;
@@ -18,19 +18,15 @@ async function getContacts() {
 
 async function saveContacts(list) {
   try {
-    const content = await fs.writeFile(
-      contactsPath,
-      JSON.stringify(list),
-      'utf8'
-    );
+    await fs.writeFile(contactsPath, JSON.stringify(list), 'utf8');
   } catch (err) {
     return err;
   }
 }
 
 async function getContactById(contactId) {
-  const id = contactId.toString();
   try {
+    const id = contactId.toString();
     const list = await getContacts();
     const contact = list.find(contact => contact.id === id) || null;
     return contact || null;
@@ -40,8 +36,8 @@ async function getContactById(contactId) {
 }
 
 async function removeContact(contactId) {
-  const id = contactId.toString();
   try {
+    const id = contactId.toString();
     const list = await getContacts();
     const idx = list.findIndex(contact => contact.id === id);
     if (idx === -1) {
@@ -69,7 +65,6 @@ async function addContact(name, email, phone) {
 
 module.exports = {
   getContacts,
-  saveContacts,
   getContactById,
   removeContact,
   addContact,
